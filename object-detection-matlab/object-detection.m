@@ -1,7 +1,6 @@
 % load image and close all previous images
 close all
-rgb = imread('sample-3.jpeg');
-banana = imread('banana.jpeg');
+rgb = imread('./inputs/sample-2.jpeg');
 figure
 imshow(rgb);
 
@@ -58,3 +57,10 @@ blob = vision.BlobAnalysis('MinimumBlobArea', 200, 'MaximumBlobArea', 1000000);
 rectangle = insertShape(rgb, 'rectangle', bboxout, 'Linewidth', 4, 'Color', [155 164 155]);
 figure
 imshow(rectangle)
+
+% extract objects from the original image by cropping
+for n = 1:size(bboxout, 1)
+    object_image = imcrop(rgb, bboxout(n, :));
+    object_name = append('./outputs/object-', string(n), '.jpeg');
+    imwrite(object_image, object_name);
+end
